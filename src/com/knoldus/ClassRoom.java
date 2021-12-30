@@ -26,42 +26,39 @@ public class ClassRoom {
     }
 
     /**
+     * @return withoutSubject
      */
-    public void getStudentsWithoutSubjects() {
-        int i;
-        int studentWithoutSubjectSize;
+    public List<Student> getStudentsWithoutSubjects() {
         List<Student> withoutSubject =
                 studentList.get().stream().filter(student ->
                         student.subject.equals(
                                 Optional.empty())).collect(Collectors.toList());
-        studentWithoutSubjectSize = withoutSubject.size();
-        System.out.println(
-                "Students that have no subjects associated");
-        for (i = 0; i <= studentWithoutSubjectSize - 1; i++) {
-            System.out.println(withoutSubject.get(i).name);
-        }
+        return withoutSubject;
     }
 
     /**
      * @param id
+     * @return distinctSubject
      */
-    public void getDistinctSubjectsByRoomId(final String id) {
+    public  List<Optional<String>> getDistinctSubjectsByRoomId(
+            final String id) {
         List<Optional<String>> distinctSubject =
                 studentList.get().stream().filter(student ->
                                 student.subject.isPresent())
                 .map(student -> student.subject).distinct()
                 .collect(Collectors.toList());
-        System.out.println(
-                "Unique subject list of the students");
-        System.out.println(distinctSubject);
+        return distinctSubject;
     }
 
     /**
+     * @return "hello Student"
      */
-    public void roomHasAssociatedStudents() {
+    public String roomHasAssociatedStudents() {
         if (roomId != "" && studentList != null) {
             System.out.println("Room " + roomId + " has Student");
-            System.out.println("hello Student");
+            return "hello Student";
+        } else {
+            return "No Student is Present";
         }
     }
 
@@ -69,6 +66,12 @@ public class ClassRoom {
      * @param args
      */
     public static void main(final String[] args) {
+
+        int i;
+        int studentWithoutSubjectSize;
+        String str1;
+        String str2;
+
         Student student1 =
                 new Student("Krishna", 1, Optional.of("C"));
         Student student2 =
@@ -107,11 +110,30 @@ public class ClassRoom {
                         student11, student12));
 
         ClassRoom classRoom1 = new ClassRoom("abc", studentList1);
+
         ClassRoom classRoom2 = new ClassRoom("xyz", studentList2);
 
-        classRoom1.getStudentsWithoutSubjects();
-        classRoom1.roomHasAssociatedStudents();
-        classRoom2.getDistinctSubjectsByRoomId("xyz");
-        classRoom2.roomHasAssociatedStudents();
+        List<Student> withoutSubject = classRoom1.getStudentsWithoutSubjects();
+
+        studentWithoutSubjectSize = withoutSubject.size();
+
+        System.out.println(
+                "Students that have no subjects associated");
+        for (i = 0; i <= studentWithoutSubjectSize - 1; i++) {
+            System.out.println(withoutSubject.get(i).name);
+        }
+
+        str1 = classRoom1.roomHasAssociatedStudents();
+        System.out.println(str1);
+        System.out.println(
+                "Unique subject list of the students in xyz");
+
+        List<Optional<String>> studentList3 =
+                classRoom2.getDistinctSubjectsByRoomId("xyz");
+
+        System.out.println(studentList3);
+
+        str2 = classRoom2.roomHasAssociatedStudents();
+        System.out.println(str2);
     }
 }
